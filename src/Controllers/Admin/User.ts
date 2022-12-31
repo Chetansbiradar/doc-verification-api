@@ -25,4 +25,32 @@ const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { getAllUsers };
+const updateAccessLevel = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { userId, accessLevel } = req.body;
+    if (!userId || !accessLevel) throw new Error("Please fill out all fields");
+
+    const user: IUser | null = await User.findById(userId);
+    if (!user) throw new Error("User not found");
+
+    user.accessLevel = accessLevel;
+    const updatedUser: IUser | null = await user.save();
+    if (!updatedUser) throw new Error("User update failed");
+
+    res.status(200).json({
+      success: true,
+      message: "User updated",
+      user: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: (error as Error).message,
+    });
+  }
+};
+
+export { getAllUsers, updateAccessLevel };

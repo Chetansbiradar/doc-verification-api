@@ -6,6 +6,8 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 
 import Auth from "./routes/Auth";
+import Admin from "./routes/Admin";
+import verifyAdmin from "./utils/verifyAdmin";
 
 dotenv.config();
 
@@ -37,6 +39,7 @@ app.get("/", (req: Request, res: Response): void => {
 });
 
 app.use("/auth", Auth);
+app.use("/admin", verifyAdmin, Admin)
 
 app.listen(port, () => {
   console.log(`listening at http://localhost:${port}`);

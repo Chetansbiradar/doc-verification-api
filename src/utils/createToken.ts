@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import { User } from "../types/Dva";
+import { IUser } from "../types/DVA";
 
-export default (user: User, secret: string, expiresIn: string) => {
+export default (user: IUser, secret: string, expiresIn: string) => {
   const { _id, name, accessLevel } = user;
   return jwt.sign(
     {

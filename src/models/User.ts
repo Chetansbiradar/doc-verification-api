@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { User } from "../types/Dva";
+import { IUser } from "../types/DVA";
 
 const userSchema: Schema = new Schema({
   name: {
@@ -26,4 +26,4 @@ const userSchema: Schema = new Schema({
   },
 });
 
-export default model<User>("User", userSchema);
+export default model<IUser>("User", userSchema);

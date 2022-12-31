@@ -2,11 +2,11 @@ import { Router } from "express";
 import verifyUser from "../utils/verifyUser";
 
 import {
-  register,
+  changePassword,
   login,
   logout,
   refresh,
-  changePassword,
+  register,
 } from "../Controllers/Auth/Auth";
 
 const router = Router();

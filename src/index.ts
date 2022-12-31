@@ -1,13 +1,14 @@
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import morgan from "morgan";
 import mongoose from "mongoose";
+import morgan from "morgan";
 
-import Auth from "./routes/Auth";
 import Admin from "./routes/Admin";
+import Auth from "./routes/Auth";
 import verifyAdmin from "./utils/verifyAdmin";
+import verifyUser from "./utils/verifyUser";
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ const mongoOptions: object = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
-mongoose.set('strictQuery', false)
+mongoose.set("strictQuery", false);
 
 app.use(
   cors({
@@ -39,7 +40,7 @@ app.get("/", (req: Request, res: Response): void => {
 });
 
 app.use("/auth", Auth);
-app.use("/admin", verifyAdmin, Admin)
+app.use("/admin", verifyUser, verifyAdmin, Admin);
 
 app.listen(port, () => {
   console.log(`listening at http://localhost:${port}`);

@@ -2,6 +2,12 @@ import { model, Schema } from "mongoose";
 import { IStudent } from "../types/DVA";
 
 const StudentSchema = new Schema({
+  srn: {
+    type: String,
+    required: true,
+    unique: true,
+    max: 50,
+  },
   name: {
     type: String,
     required: true,

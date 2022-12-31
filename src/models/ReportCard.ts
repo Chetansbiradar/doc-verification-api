@@ -7,6 +7,11 @@ const ReportCardSchema = new Schema({
     ref: "Student",
     required: true,
   },
+  department: {
+    type: Schema.Types.ObjectId,
+    ref: "Dept",
+    required: true,
+  },
   exam: {
     type: Schema.Types.ObjectId,
     ref: "Exam",

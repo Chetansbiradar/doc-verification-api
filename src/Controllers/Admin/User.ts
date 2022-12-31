@@ -1,11 +1,7 @@
 import { Request, Response } from "express";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 import User from "../../models/User";
 import { IUser } from "../../types/DVA";
-
-import createToken from "../../utils/createToken";
 
 const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -53,4 +49,28 @@ const updateAccessLevel = async (
   }
 };
 
-export { getAllUsers, updateAccessLevel };
+const deleteUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { userId } = req.body;
+    if (!userId) throw new Error("Please fill out all fields");
+
+    const user: IUser | null = await User.findById(userId);
+    if (!user) throw new Error("User not found");
+
+    const deletedUser: IUser | null = await user.remove();
+    if (!deletedUser) throw new Error("User delete failed");
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted",
+      user: deletedUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: (error as Error).message,
+    });
+  }
+};
+
+export { getAllUsers, updateAccessLevel, deleteUser };

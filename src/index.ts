@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import mongoose from "mongoose";
 
+import Auth from "./routes/Auth";
+
 dotenv.config();
 
 const app: Express = express();
@@ -33,6 +35,8 @@ mongoose.connect(mongoURI, mongoOptions).then(() => {
 app.get("/", (req: Request, res: Response): void => {
   res.send("Hello");
 });
+
+app.use("/auth", Auth);
 
 app.listen(port, () => {
   console.log(`listening at http://localhost:${port}`);

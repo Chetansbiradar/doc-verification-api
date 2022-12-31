@@ -23,13 +23,12 @@ export interface ISubject extends Document {
 
 export interface IExam extends Document {
   _id: string;
-  name: string;
   subjects: string[];
   MMYYofExam: string;
   semester: number;
 }
 
-export interface ReportCard extends Document {
+export interface IReportCard extends Document {
   _id: string;
   student: string;
   department: string;

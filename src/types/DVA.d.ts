@@ -41,6 +41,7 @@ export interface IReportCard extends Document {
 
 export interface IStudent extends Document {
   _id: string;
+  srn: string;
   name: string;
   email: string;
   phone: string;

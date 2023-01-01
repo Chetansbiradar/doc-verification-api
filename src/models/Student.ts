@@ -31,14 +31,20 @@ const StudentSchema = new Schema({
     ref: "Dept",
     required: true,
   },
-  batch: {
-    type: String,
+  joiningDate: {
+    type: Date,
     required: true,
   },
   reportCards: [
     {
       type: Schema.Types.ObjectId,
       ref: "ReportCard",
+    },
+  ],
+  accessibleTo: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
   ],
 });

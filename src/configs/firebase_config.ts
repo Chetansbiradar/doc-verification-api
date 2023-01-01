@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
+import { FirebaseApp, initializeApp } from "firebase/app";
 
-const firebaseConfig: object = {
+const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   projectId: process.env.FIREBASE_PROJECT_ID,
@@ -10,7 +10,7 @@ const firebaseConfig: object = {
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
-const app: object = initializeApp(firebaseConfig);
+const app: FirebaseApp = initializeApp(firebaseConfig);
 
 if (app) {
   console.log("Firebase app initialized");

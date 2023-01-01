@@ -19,6 +19,6 @@ router.get("/logout", logout);
 
 router.get("/refresh", refresh);
 
-router.put("change-password", verifyUser, changePassword);
+router.put("/change-password", verifyUser, changePassword);
 
 export default router;

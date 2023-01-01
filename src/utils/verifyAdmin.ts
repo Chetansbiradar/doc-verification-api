@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 
-export default async (req: Request, res: Response, next: NextFunction) => {
+export default async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const accessLevel = req.body.user.accessLevel;
     if (accessLevel !== 2) throw Error("Unauthorized");

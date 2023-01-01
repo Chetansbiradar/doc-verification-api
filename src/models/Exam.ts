@@ -9,8 +9,8 @@ const ExamSchema = new Schema({
       required: true,
     },
   ],
-  MMYYofExam: {
-    type: String,
+  examDate: {
+    type: Date,
     required: true,
   },
   semester: {

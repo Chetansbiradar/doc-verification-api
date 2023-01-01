@@ -29,11 +29,11 @@ const updateAccessLevel = async (
     const { userId, accessLevel } = req.body;
     if (!userId || !accessLevel) throw new Error("Please fill out all fields");
 
-    const user: IUser | null = await User.findById(userId);
-    if (!user) throw new Error("User not found");
-
-    user.accessLevel = accessLevel;
-    const updatedUser: IUser | null = await user.save();
+    const updatedUser: IUser | null = await User.findByIdAndUpdate(
+      userId,
+      { accessLevel },
+      { new: true }
+    ).select("-password");
     if (!updatedUser) throw new Error("User update failed");
 
     res.status(200).json({
@@ -54,10 +54,9 @@ const deleteUser = async (req: Request, res: Response): Promise<void> => {
     const { userId } = req.body;
     if (!userId) throw new Error("Please fill out all fields");
 
-    const user: IUser | null = await User.findById(userId);
-    if (!user) throw new Error("User not found");
-
-    const deletedUser: IUser | null = await user.remove();
+    const deletedUser: IUser | null = await User.findByIdAndDelete(
+      userId
+    ).select("-password");
     if (!deletedUser) throw new Error("User delete failed");
 
     res.status(200).json({

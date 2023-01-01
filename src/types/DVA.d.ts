@@ -1,7 +1,6 @@
-import { Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 export interface IUser extends Document {
-  _id: string;
   name: string;
   email: string;
   accessLevel: number;
@@ -9,43 +8,44 @@ export interface IUser extends Document {
 }
 
 export interface IDept extends Document {
-  _id: string;
   code: string;
   name: string;
 }
 
 export interface ISubject extends Document {
-  _id: string;
   code: string;
   name: string;
   credits: number;
 }
 
 export interface IExam extends Document {
-  _id: string;
-  subjects: string[];
-  MMYYofExam: string;
+  subjects: mongoose.Types.ObjectId[];
+  examDate: Date;
   semester: number;
 }
 
 export interface IReportCard extends Document {
-  _id: string;
-  student: string;
-  department: string;
-  exam: string;
+  student: mongoose.Types.ObjectId;
+  department: mongoose.Types.ObjectId;
+  exam: mongoose.Types.ObjectId;
   grades: {
-    subject: string;
+    subject: mongoose.Types.ObjectId;
     grade: string;
   }[];
+  file: {
+    name: string;
+    url: string;
+    path: string;
+  };
+  publishDate: Date;
 }
 
 export interface IStudent extends Document {
-  _id: string;
   srn: string;
   name: string;
   email: string;
   phone: string;
-  department: string;
-  batch: string;
-  reportCards: string[];
+  department: mongoose.Types.ObjectId;
+  joiningDate: Date;
+  reportCards: mongoose.Types.ObjectId[];
 }

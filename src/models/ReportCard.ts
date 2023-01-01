@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
-import { IReportCard } from "../types/DVA";
+import { IReportCard, IStudent } from "../types/DVA";
+import Student from "./Student";
 
 const ReportCardSchema = new Schema({
   student: {
@@ -30,6 +31,40 @@ const ReportCardSchema = new Schema({
       },
     },
   ],
+  file: {
+    name: {
+      type: String,
+      required: true,
+      maxlength: 255,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+    path: {
+      type: String,
+      required: true,
+    },
+  },
+  publishDate: {
+    type: Date,
+  },
+});
+
+ReportCardSchema.pre("save", async function (next): Promise<void> {
+  const student: IStudent | null = await Student.findByIdAndUpdate(
+    this.student,
+    {
+      $addToSet: {
+        reportCards: this._id,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  next();
 });
 
 export default model<IReportCard>("ReportCard", ReportCardSchema);

@@ -15,6 +15,9 @@ const userSchema: Schema = new Schema(
       unique: true,
       max: 1500,
     },
+    phone: {
+      type: String,
+    },
     accessLevel: {
       type: Number,
       default: 0,

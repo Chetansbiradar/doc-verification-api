@@ -7,70 +7,6 @@ import { IReportCard, IStudent } from "../../types/DVA";
 
 const storage = getStorage(app);
 
-const getStudents = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const students: IStudent[] = await Student.find();
-    if (students.length === 0)
-      res.status(200).json({
-        success: true,
-        message: "No students found",
-        students,
-      });
-    if (!students) throw new Error("Something went wrong fetching students");
-
-    res.status(200).json({
-      success: true,
-      message: "Students fetched successfully",
-      students,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: (error as Error).message,
-    });
-  }
-};
-
-const addStudent = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { srn, name, email, phone, department, joiningDate } =
-      req.body as Pick<
-        IStudent,
-        "srn" | "name" | "email" | "phone" | "department" | "joiningDate"
-      >;
-
-    if (!name || !email || !phone || !department || !joiningDate)
-      throw new Error("All fields are required");
-
-    const student: IStudent | null = await Student.findOne({ srn });
-    if (student) throw new Error("Student already exists");
-
-    const newStudent: IStudent = new Student({
-      srn,
-      name,
-      email,
-      phone,
-      department,
-      joiningDate,
-    });
-
-    const savedStudent: IStudent = await newStudent.save();
-    if (!savedStudent)
-      throw new Error("Something went wrong saving the student");
-
-    res.status(200).json({
-      success: true,
-      message: "Student added successfully",
-      student: savedStudent,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: (error as Error).message,
-    });
-  }
-};
-
 // const addStudents = async (req: Request, res: Response): Promise<void> => {
 //   try {
 //     const { students } = req.body;
@@ -123,38 +59,6 @@ const addStudent = async (req: Request, res: Response): Promise<void> => {
 //     });
 //   }
 // };
-
-const updateStudentDetails = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const { srn, data } = req.body;
-    if (!srn || !data) throw new Error("All fields are required");
-
-    const student: IStudent | null = await Student.findOne({ srn });
-    if (!student) throw new Error("Student does not exist");
-
-    const updatedStudent: IStudent | null = await Student.findOneAndUpdate(
-      { srn },
-      { $set: data },
-      { new: true }
-    );
-    if (!updatedStudent)
-      throw new Error("Something went wrong updating the student");
-
-    res.status(200).json({
-      success: true,
-      message: "Student updated successfully",
-      student: updatedStudent,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: (error as Error).message,
-    });
-  }
-};
 
 const addReport = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -210,10 +114,4 @@ const addReport = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export {
-  getStudents,
-  addStudent,
-  // addStudents,
-  updateStudentDetails,
-  addReport,
-};
+export { addReport };

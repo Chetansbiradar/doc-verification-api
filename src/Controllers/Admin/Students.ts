@@ -8,6 +8,38 @@ const storage = getStorage(app);
 
 const getStudents = async (req: Request, res: Response): Promise<void> => {
   try {
+    // get all students sorted by department code and joining date
+    const students: IStudent[] = await Student.find()
+      .populate("department")
+      .sort({ joiningDate: 1, "department.code": 1 });
+    if (students?.length === 0) {
+      res.status(200).json({
+        success: true,
+        message: "No students found",
+        students,
+      });
+      return;
+    }
+    if (!students) throw new Error("Something went wrong fetching students");
+
+    res.status(200).json({
+      success: true,
+      message: "Students fetched successfully",
+      students,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: (error as Error).message,
+    });
+  }
+};
+
+const getStudentsGroupedDept = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
     // get all students by grouping all students of same department together
     const groups: IStudent[] = await Student.aggregate([
       {
@@ -149,4 +181,10 @@ const deleteStudent = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { getStudents, addStudent, updateStudentDetails, deleteStudent };
+export {
+  getStudents,
+  getStudentsGroupedDept,
+  addStudent,
+  updateStudentDetails,
+  deleteStudent,
+};

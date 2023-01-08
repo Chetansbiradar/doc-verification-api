@@ -11,6 +11,7 @@ import {
   addStudent,
   deleteStudent,
   getStudents,
+  getStudentsGroupedDept,
   updateStudentDetails,
 } from "../Controllers/Admin/Students";
 import {
@@ -38,6 +39,8 @@ router.delete("/delete-user", deleteUser);
 
 // doc routes
 router.get("/students", getStudents);
+
+router.get("/students-group-dept", getStudentsGroupedDept);
 
 router.post("/create-student", addStudent);
 

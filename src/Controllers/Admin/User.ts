@@ -27,7 +27,7 @@ const updateAccessLevel = async (
 ): Promise<void> => {
   try {
     const { userId, accessLevel } = req.body;
-    if (!userId || !accessLevel) throw new Error("Please fill out all fields");
+    if (!userId || isNaN(accessLevel)) throw new Error("Please fill out all fields");
 
     const updatedUser: IUser | null = await User.findByIdAndUpdate(
       userId,

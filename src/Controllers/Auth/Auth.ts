@@ -39,10 +39,19 @@ const register = async (req: Request, res: Response): Promise<void> => {
     );
     if (!token) throw new Error("Token creation failed");
 
+    // other fields except password
+    const userData = {
+      _id: savedUser._id,
+      name: savedUser.name,
+      email: savedUser.email,
+      accessLevel: savedUser.accessLevel,
+    };
+
     res.cookie("token", token, { httpOnly: true }).status(200).json({
       success: true,
       message: "User created successfully",
       token,
+      user: userData,
     });
   } catch (error) {
     res.status(500).json({
@@ -71,10 +80,13 @@ const login = async (req: Request, res: Response): Promise<void> => {
     );
     if (!token) throw new Error("Token creation failed");
 
+    const { password: _, ...userData } = user.toObject();
+
     res.cookie("token", token, { httpOnly: true }).status(200).json({
       success: true,
       message: "Logged in successfully",
       token,
+      user: userData,
     });
   } catch (error) {
     res.status(500).json({
@@ -105,13 +117,13 @@ const refresh = async (req: Request, res: Response): Promise<void> => {
 
     const isJwtValid: string | object = jwt.verify(
       token,
-      process.env.REFRESH_TOKEN_SEC as string
+      process.env.ACCESS_TOKEN_SEC as string
     );
     if (!isJwtValid) throw new Error("Invalid token");
 
     const user: IUser | null = await User.findById(
       (isJwtValid as { _id: string })._id
-    );
+    ).select("-password");
     if (!user) throw new Error("User does not exist");
 
     const newToken: string = createToken(
@@ -125,6 +137,7 @@ const refresh = async (req: Request, res: Response): Promise<void> => {
       success: true,
       message: "Token refreshed successfully",
       token: newToken,
+      user,
     });
   } catch (error) {
     res.status(500).json({
@@ -140,7 +153,7 @@ const changePassword = async (req: Request, res: Response): Promise<void> => {
     if (!oldPassword || !newPassword)
       throw new Error("Please fill out all fields");
 
-    const user: IUser | null = await User.findById(req.body._id);
+    const user: IUser | null = await User.findById(req.body.user._id);
     if (!user) throw new Error("User does not exist");
 
     const isMatch: boolean = await bcrypt.compare(oldPassword, user.password);

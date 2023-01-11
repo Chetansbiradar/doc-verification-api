@@ -25,6 +25,7 @@ export default async (
       name: user.name,
       email: user.email,
       accessLevel: user.accessLevel,
+      canAccess: user.canAccess,
     };
 
     next();

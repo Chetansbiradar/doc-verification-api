@@ -1,20 +1,21 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
+dotenv.config();
 
 import Admin from "./routes/Admin";
 import Auth from "./routes/Auth";
+import Client from "./routes/Client";
 import verifyAdmin from "./utils/verifyAdmin";
+import verifyOfficer from "./utils/verifyOfficer";
 import verifyUser from "./utils/verifyUser";
-
-dotenv.config();
 
 const app: Express = express();
 const port: number = Number(process.env.PORT) || 5000;
-const mongoURI: string = process.env.MONGO_URI || "";
+const mongoURI: string = process.env.MONGO_URI as string;
 const mongoOptions: object = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -41,6 +42,7 @@ app.get("/", (req: Request, res: Response): void => {
 
 app.use("/auth", Auth);
 app.use("/admin", verifyUser, verifyAdmin, Admin);
+app.use("/client", verifyUser, verifyOfficer, Client);
 
 app.listen(port, () => {
   console.log(`listening at http://localhost:${port}`);

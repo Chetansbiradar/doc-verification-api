@@ -28,6 +28,12 @@ const userSchema: Schema = new Schema(
       min: 8,
       max: 1024,
     },
+    canAccess: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Student",
+      },
+    ],
   },
   {
     versionKey: false,

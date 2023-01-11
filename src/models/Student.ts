@@ -39,12 +39,6 @@ const StudentSchema = new Schema(
         ref: "ReportCard",
       },
     ],
-    accessibleTo: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
   },
   {
     versionKey: false,

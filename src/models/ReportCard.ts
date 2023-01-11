@@ -27,24 +27,25 @@ const ReportCardSchema = new Schema(
           required: true,
         },
         grade: {
-          type: Number,
+          type: String,
           required: true,
         },
       },
     ],
+    sgpa: {
+      type: Number,
+      required: true,
+    },
     file: {
       name: {
         type: String,
-        required: true,
         maxlength: 255,
       },
       url: {
         type: String,
-        required: true,
       },
       path: {
         type: String,
-        required: true,
       },
     },
     publishDate: {
@@ -62,6 +63,24 @@ ReportCardSchema.pre("save", async function (next): Promise<void> {
     {
       $addToSet: {
         reportCards: this._id,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  next();
+});
+
+// findbyidanddelete hook
+ReportCardSchema.pre("findOneAndDelete", async function (next): Promise<void> {
+  // pull report from student
+  const student: IStudent | null = await Student.findByIdAndUpdate(
+    this.getQuery()._id,
+    {
+      $pull: {
+        reportCards: this.getQuery()._id,
       },
     },
     {

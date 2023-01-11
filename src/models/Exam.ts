@@ -3,6 +3,11 @@ import { IExam } from "../types/DVA";
 
 const ExamSchema = new Schema(
   {
+    dept: {
+      type: Schema.Types.ObjectId,
+      ref: "Dept",
+      required: true,
+    },
     subjects: [
       {
         type: Schema.Types.ObjectId,
